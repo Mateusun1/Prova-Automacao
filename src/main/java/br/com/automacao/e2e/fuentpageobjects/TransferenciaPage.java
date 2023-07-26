@@ -1,15 +1,22 @@
 package br.com.automacao.e2e.fuentpageobjects;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class TransferenciaPage {
     WebDriver driver;
+    WebDriverWait wait;
     public TransferenciaPage(WebDriver driver) {
         this.driver = driver;
+        wait = new WebDriverWait(driver, Duration.ofSeconds(1000));
         PageFactory.initElements(new AjaxElementLocatorFactory(driver,10), this);
     }
     @FindBy(name = "accountNumber")
@@ -35,8 +42,8 @@ public class TransferenciaPage {
         return this;
     }
 
-    public String PegarMensagem() throws InterruptedException {
-        Thread.sleep(500);
-        return this.mensagemTransferenciaSucesso.getText();
+    public String pegarMensagem(){
+        WebElement modalText = wait.until(ExpectedConditions.visibilityOf(mensagemTransferenciaSucesso));
+        return modalText.getText();
     }
 }

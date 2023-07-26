@@ -2,15 +2,17 @@ package br.com.automacao.e2e.ui;
 
 import br.com.automacao.e2e.fuentpageobjects.LoginPage;
 import br.com.automacao.e2e.utils.BaseTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BugBankFluentPageTest extends BaseTest {
+class BugBankFluentPageTest extends BaseTest {
     private final WebDriver driver = getDriver();
     @Test
-    void testar() throws InterruptedException {
+    @DisplayName("Deve realizar uma transferência de uma conta pra outra")
+    void DeveTransferirDinheiroParaOutraConta() {
         LoginPage loginPage = new LoginPage(driver)
                 .clicarBotaoRegistrar()
                 .preencherDados("email@email.com","Joao","12345", "12345")
@@ -34,7 +36,7 @@ public class BugBankFluentPageTest extends BaseTest {
                         .clicarBotaoTranferencia()
                         .preencherValoresDaTransferencia(numeroConta, "16.00")
                         .realizarTransferencia()
-                        .PegarMensagem();
+                        .pegarMensagem();
 
        assertEquals("Transferencia realizada com sucesso", mensagem);
     }

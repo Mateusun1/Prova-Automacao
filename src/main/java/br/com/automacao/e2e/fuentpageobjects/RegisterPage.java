@@ -2,15 +2,24 @@ package br.com.automacao.e2e.fuentpageobjects;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class RegisterPage {
 
     WebDriver driver;
+    WebDriverWait wait;
+
     public RegisterPage(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver, this);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver,5), this);
     }
     @FindBy(css = "form[class='styles__ContainerFormRegister-sc-7fhc7g-0 keVbpY'] input[name='email']")
     WebElement inputEmail;
@@ -20,7 +29,7 @@ public class RegisterPage {
     WebElement inputSenha;
     @FindBy(css = "form[class='styles__ContainerFormRegister-sc-7fhc7g-0 keVbpY'] input[name='passwordConfirmation']")
     WebElement inputConfirmarSenha;
-    @FindBy(css = "label[class='styles__Container-sc-1pngcbh-0 kIwoPV'] label[id='toggleAddBalance']")
+    @FindBy(css = "label.styles__Container-sc-1pngcbh-0.kIwoPV label#toggleAddBalance")
     WebElement botaoAtivarSaldo;
     @FindBy(css = "button[class='style__ContainerButton-sc-1wsixal-0 CMabB button__child']")
     WebElement botaoCadastrar;
@@ -35,8 +44,9 @@ public class RegisterPage {
         this.inputConfirmarSenha.sendKeys(confirmarSenha);
         return this;
     }
-    public RegisterPage ativarSaldo() throws InterruptedException {
-        Thread.sleep(300);
+    public RegisterPage ativarSaldo() {
+        Actions actions = new Actions(driver);
+        actions.moveToElement(botaoAtivarSaldo).moveToElement(botaoAtivarSaldo).click().build().perform();
         this.botaoAtivarSaldo.click();
         return this;
     }
@@ -44,8 +54,8 @@ public class RegisterPage {
         this.botaoCadastrar.click();
         return this;
     }
-    public LoginPage fecharModal() throws InterruptedException {
-        Thread.sleep(300);
+    public LoginPage fecharModal() {
+        wait.until(ExpectedConditions.elementToBeClickable(botaoFecharModal));
         this.botaoFecharModal.click();
         return new LoginPage(driver);
     }
